@@ -47,6 +47,9 @@
         }
       });
 
+      $('.paragraphpin-icon').remove();
+      $('.paragraphpin-mask').remove();
+      options.toolPanel.appendTo('body').hide();
       this.children('p').each(function(i, p) {
         var $p = $(p);
         var offset = $p.offset();
@@ -78,7 +81,7 @@
           icon.addClass('active');
           state = 'active';
           $('.paragraphpin-mask').remove();
-          $('<div>')
+          var $mask = $('<div>')
             .addClass('paragraphpin-mask')
             .css({
               'position': 'absolute',
@@ -94,6 +97,12 @@
             )
             .append(options.toolPanel.removeClass('hide').addClass('paragraphpin-tools').show())
             .appendTo('body');
+
+          if (options.style === 'border') {
+            $mask.addClass('border');
+          } else if (options.style === 'arrow') {
+            $mask.find('.paragraphpin-tools').addClass('arrow');
+          }
 
           options.toolPanel.find('[data-dismiss="paragraphpin"]').off('click').on('click', function() {
             close();
@@ -153,7 +162,8 @@
       toolPanel: $('<div>Tool Panel</div>'),
       iconElement: $('<div><i class="icon-pushpin"></i></div>'),
       borderSize: 10,
-      padding: 2
+      padding: 2,
+      style: 'border'
     };
 
     if (typeof arguments[0] === 'string') {

@@ -33,7 +33,7 @@
 	background-color: #eee;
 }
 
-.paragraphpin-mask {
+.paragraphpin-mask.border {
 	border: 10px solid #eee;
 	-webkit-border-radius: 4px;
 	-moz-border-radius: 4px;
@@ -43,4 +43,34 @@
 .paragraphpin-tools {
 	padding: 6px;
 	background-color: #eee;
+}
+
+.paragraphpin-tools.arrow {
+	position: relative;
+	margin-top: 10px;
+	border: 2px solid #ccc;
+}
+.paragraphpin-tools.arrow:after, .paragraphpin-tools.arrow:before {
+	bottom: 100%;
+	border: solid transparent;
+	content: " ";
+	height: 0;
+	width: 0;
+	position: absolute;
+	pointer-events: none;
+}
+
+.paragraphpin-tools.arrow:after {
+	border-color: rgba(204, 204, 204, 0);
+	border-bottom-color: #eee;
+	border-width: 10px;
+	left: 3%;
+	margin-left: -10px;
+}
+.paragraphpin-tools.arrow:before {
+	border-color: rgba(235, 235, 235, 0);
+	border-bottom-color: #ccc;
+	border-width: 13px;
+	left: 3%;
+	margin-left: -13px;
 }
