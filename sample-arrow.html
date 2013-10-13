@@ -1,15 +1,13 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="http://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.min.css">
 
     <link rel="stylesheet" type="text/css" href="src/jquery.paragraphpin.css">
 
     <style>
-      .save-btn {
-        margin-top: 2px;
-      }
+
 
       .close-btn {
         margin: 4px;
@@ -22,8 +20,22 @@
       }
 
       .tags {
+        display: inline-block;
+        float: left;
+        margin-top: 5px;
+        width: 89%;
+      }
+      .spacer {
+        display: inline-block;
+        float: left;
         margin-top: 2px;
-        width: 80%;
+        width: 1%;
+      }
+      .save-btn {
+        display: inline-block;
+        float: left;
+        margin-top: 2px;
+        width: 10%;
       }
     </style>
   </head>
@@ -57,38 +69,39 @@
       <div class="panel-close">
         <a href="#" class="close close-btn" data-dismiss="paragraphpin">&times;</a>
       </div>
-      <b style="color: #666;">Paragraph Pinned</b>
+      <b style="color: #666;"><i class="icon-pushpin"></i> Pin This:</b>
       <div>
-        <textarea placeholder="Write something about this paragraph..." style="width: 100%;"></textarea>
+        <textarea placeholder="Write something about it..." style="width: 100%;"></textarea>
         <br>
-        <button type="button" class="pull-right save-btn btn btn-primary btn-sm" data-submit="paragraphpin">Save</button>
         <input type="text" class="tags" placeholder="Tags">
+        <span class="spacer"></span>
+        <button type="button" class="save-btn btn btn-primary btn-sm" data-submit="paragraphpin">Save</button>
         <div class="clearfix"></div>
       </div>
     </div>
 
     <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
-    <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
 
     <script src="src/jquery.paragraphpin.js"></script>
     <script>
       $(function() {
         var makePins = function() {
           $('#paragraphs').paragraphpin({
-            //style: 'arrow',
+            style: 'arrow',
             toolPanel: $('#tool-panel'),
             onSubmit: function(para, panel) {
-              console.log('Submitting:', '\n"' + $(panel).find('textarea').val() + '"\n', 'for', '\n"' +  $(para).text() + '"\n' );
+              console.log('Submitting:', '\n"' + $(panel).find('textarea').val() + '"\n', 'for', '\n"' +  para + '"\n' );
               this.paragraphpin('close');
             },
             onSelect: function(para, panel) {
-              console.log('Selected:\n', $(para).text());
+              console.log('Selected:\n', para);
             }
           });
         };
-
+        
         makePins();
-
+        
         $(window).resize(makePins);
       });
     </script>
