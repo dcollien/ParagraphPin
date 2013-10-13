@@ -74,7 +74,7 @@
         $('.paragraphpin-selection').remove();
       };
 
-      var open = function(offset, width, height, html) {        
+      var open = function(offset, width, height, html, arrowLeft) {        
         $('.paragraphpin-mask').remove();
         var $mask = $('<div>')
           .addClass('paragraphpin-mask')
@@ -96,7 +96,38 @@
         if (options.style === 'border') {
           $mask.addClass('border');
         } else if (options.style === 'arrow') {
+          $mask.find('.paragraphpin-tools')
+            .removeClass('leftleft')
+            .removeClass('left')
+            .removeClass('midleft')
+            .removeClass('mid')
+            .removeClass('midright')
+            .removeClass('right')
+            .removeClass('rightright');
+          
           $mask.find('.paragraphpin-tools').addClass('arrow');
+
+          if (typeof(arrowLeft) !== 'undefined') {
+            var div = 0.125;
+            var perc = arrowLeft/width;
+            console.log(perc);
+
+            if (perc < (div + div/2)) {
+              $mask.find('.paragraphpin-tools').addClass('leftleft');
+            } else if (perc < (2*div + div/2)) {
+              $mask.find('.paragraphpin-tools').addClass('left');
+            } else if (perc < (3*div + div/2)) {
+              $mask.find('.paragraphpin-tools').addClass('midleft');
+            } else if (perc < (4*div + div/2)) {
+              $mask.find('.paragraphpin-tools').addClass('mid');
+            } else if (perc < (5*div + div/2)) {
+              $mask.find('.paragraphpin-tools').addClass('midright');
+            } else if (perc < (6*div + div/2)) {
+              $mask.find('.paragraphpin-tools').addClass('right');
+            } else if (perc < (7*div + div/2)) {
+              $mask.find('.paragraphpin-tools').addClass('rightright');
+            }
+          }
         }
 
         options.toolPanel.find('[data-dismiss="paragraphpin"]').off('click').on('click', function() {
@@ -167,10 +198,12 @@
           hilite(selection, range);
           var offset = {
             top: boundary.top + $(document).scrollTop(),
-            left: boundary.left
+            left: elt.offset().left
           };
-         
-          open(offset, elt.width(), boundary.height, selectionHTML);
+
+          var arrowLeft = (boundary.left + boundary.width/2) - offset.left;
+          
+          open(offset, elt.width(), boundary.height, selectionHTML, arrowLeft);
 
           isSelected = true;
           state = 'active';
