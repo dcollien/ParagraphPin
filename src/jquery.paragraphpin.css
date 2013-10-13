@@ -4,15 +4,21 @@
 	border: 1px solid #eee;
 	width: 24px;
 	height: 24px;
-	text-align: center;
+	text-align: right;
 	cursor: pointer;
 	-webkit-border-radius: 4px;
 	-moz-border-radius: 4px;
 	border-radius: 4px;
 	color: #666;
+	padding-right: 6px;
 
 	transition: background-color 0.5s;
 	-webkit-transition: background-color 0.5s;
+}
+
+.paragraphpin-icon.hasData {
+	width: auto;
+	padding-left: 6px;
 }
 
 .paragraphpin-icon:hover {

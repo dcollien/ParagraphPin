@@ -74,7 +74,7 @@
         $('.paragraphpin-selection').remove();
       };
 
-      var open = function(offset, width, height, html, arrowLeft) {        
+      var open = function(offset, width, height, html, element, arrowLeft) {        
         $('.paragraphpin-mask').remove();
         var $mask = $('<div>')
           .addClass('paragraphpin-mask')
@@ -104,7 +104,7 @@
             .removeClass('midright')
             .removeClass('right')
             .removeClass('rightright');
-          
+
           $mask.find('.paragraphpin-tools').addClass('arrow');
 
           if (typeof(arrowLeft) !== 'undefined') {
@@ -140,7 +140,7 @@
           return false;
         });
 
-        elt.trigger('paragraphpin-select', html);
+        elt.trigger('paragraphpin-select', { 'html': html, 'paragraph': element });
       };
 
       var close = function() {
@@ -157,15 +157,16 @@
 
       this.on('paragraphpin-submit', function() {
         if (options.onSubmit) {
-          options.onSubmit.call(elt, elt.data('selectedParagraph'), options.toolPanel);
+          options.onSubmit.call(elt, elt.data('selectedHTML'), elt.data('selectedParagraph'), options.toolPanel);
         }
       });
 
-      this.on('paragraphpin-select', function(evt, $selectedParagraph) {
-        elt.data('selectedParagraph', $selectedParagraph);
+      this.on('paragraphpin-select', function(evt, data) {
+        elt.data('selectedParagraph', data.paragraph);
+        elt.data('selectedHTML', data.html);
 
         if (options.onSelect) {
-          options.onSelect.call(elt, elt.data('selectedParagraph'), options.toolPanel);
+          options.onSelect.call(elt, elt.data('selectedHTML'), elt.data('selectedParagraph'), options.toolPanel);
         }
       });
 
@@ -203,7 +204,7 @@
 
           var arrowLeft = (boundary.left + boundary.width/2) - offset.left;
           
-          open(offset, elt.width(), boundary.height, selectionHTML, arrowLeft);
+          open(offset, elt.width(), boundary.height, selectionHTML, null, arrowLeft);
 
           isSelected = true;
           state = 'active';
@@ -218,7 +219,7 @@
       this.children('p').each(function(i, p) {
         var $p = $(p);
         var offset = $p.offset();
-
+        var iconOffset = 0;
         var icon = options.iconElement.clone().hide();
 
         icons.push(icon);
@@ -252,7 +253,7 @@
 
           icon.addClass('active');
           state = 'active';
-          open(offset, $p.width(), $p.height(), $p.html());
+          open(offset, $p.width(), $p.height(), $p.html(), $p);
         });
 
         $p.on('mouseenter', function() {
@@ -287,6 +288,17 @@
           .addClass('paragraphpin-icon')
           .addClass(options.iconClass)
           .appendTo(options.parentElement);
+
+        if ($p.attr(options.pinDataAttr)) {
+          icon.find('#' + options.pinDataID)
+            .html($p.attr(options.pinDataAttr));
+
+          iconOffset = icon.width();
+          icon.addClass('hasData');
+          iconOffset = iconOffset - icon.width();
+          console.log(offset.left, iconOffset);
+          icon.css('left', (offset.left + iconOffset) + 'px');
+        }
       });
     }
   };
@@ -298,11 +310,13 @@
       parentElement: $('body'),
       iconClass: 'paragraphpin-icon',
       toolPanel: $('<div>Tool Panel</div>'),
-      iconElement: $('<div><i class="icon-pushpin"></i></div>'),
+      iconElement: $('<div><span id="pin-data"></span> <i class="icon-pushpin"></i></div>'),
       borderSize: 10,
       padding: 2,
       style: 'border',
-      highlightColor: '#ddeeff'
+      highlightColor: '#ddeeff',
+      pinDataAttr: 'data-pin',
+      pinDataID: 'pin-data'
     };
 
     if (typeof arguments[0] === 'string') {
