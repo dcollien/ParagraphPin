@@ -37,6 +37,14 @@
         margin-top: 2px;
         width: 10%;
       }
+
+      #tool-panel hr {
+        height: 1px;
+        border: none;
+        background-color: #aaa;
+        padding: 0;
+        margin: 3px 0px;
+      }
     </style>
   </head>
   <body>
@@ -77,6 +85,7 @@
         <span class="spacer"></span>
         <button type="button" class="save-btn btn btn-primary btn-sm" data-submit="paragraphpin">Save</button>
         <div class="clearfix"></div>
+        <div id="more-content"></div>
       </div>
     </div>
 
@@ -96,6 +105,19 @@
             },
             onSelect: function(html, para, panel) {
               console.log('Selected:\n', html);
+              
+              var paraData = $(para).attr('data-pin');
+
+              if (paraData) {
+                $(panel).find('#more-content')
+                  .empty()
+                  .append($('<hr>'))
+                  .append(
+                    $('<a>')
+                      .attr('href', '#')
+                      .text('Pinned ' + paraData + ' times')
+                  );                
+              }
             }
           });
         };

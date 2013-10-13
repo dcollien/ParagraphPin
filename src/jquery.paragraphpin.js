@@ -231,6 +231,11 @@
           if (state === 'active') return;
           
           clearTimeout(iconHideTimeout);
+          $.each(icons, function(i, $icon) {
+            if ($icon !== icon) {
+              $icon.fadeOut();
+            }
+          });
           icon.fadeIn();
         });
 
@@ -253,6 +258,9 @@
 
           icon.addClass('active');
           state = 'active';
+          var iconZindex = parseInt($p.css('z-index'), 10);
+          iconZindex = isNaN(iconZindex) ? 1 : iconZindex + 1;
+          icon.css('z-index', iconZindex);
           open(offset, $p.width(), $p.height(), $p.html(), $p);
         });
 
