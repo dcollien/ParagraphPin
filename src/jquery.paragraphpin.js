@@ -113,7 +113,6 @@
       };
 
       var close = function() {
-        unHilite();
         elt.trigger('paragraphpin-close');
       };
 
@@ -121,6 +120,7 @@
         $('.paragraphpin-icon.active').removeClass('active');
         state = 'inactive';
         isSelected = false;
+        unHilite();
         $('.paragraphpin-mask').remove();
       });
 
